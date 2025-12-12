@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<!-- Define the Angular App -->
+<html ng-app="demoApp" lang="">
+<head>
+    <title>AngularJS Client</title>
+    <!-- Import AngularJS (v1.x) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+
+    <script>
+        // Define the module
+        var app = angular.module('demoApp', []);
+
+        // Define the controller
+        app.controller('HelloController', function($scope, $http) {
+
+            $scope.greeting = { content: 'Waiting for data...' };
+
+            $scope.fetchGreeting = function() {
+                // Make the GET request
+                $http.get('http://localhost:8080/greeting?name=AngularUser')
+                    .then(function(response) {
+                        // Success: bind data to the scope
+                        // response.data holds the actual JSON body
+                        $scope.greeting = response.data;
+                    }, function(error) {
+                        // Error handling
+                        console.error("Error fetching data:", error);
+                        $scope.greeting.content = "Error occurred!";
+                    });
+            };
+        });
+    </script>
+</head>
+<body>
+<!-- Connect the controller to this section of the HTML -->
+<div ng-controller="HelloController">
+    <h1>Task 5: AngularJS Client</h1>
+
+    <button ng-click="fetchGreeting()">Get Greeting</button>
+
+    <div style="margin-top: 20px; border: 1px dashed #000; padding: 10px;">
+        <h3>Result:</h3>
+        <!-- Use Angular binding {{ }} to display data -->
+        <p><strong>Content:</strong> {{greeting.content}}</p>
+
+        <!-- We can also verify the HATEOAS link exists -->
+        <p><strong>Self Link:</strong> {{greeting._links.self.href}}</p>
+    </div>
+</div>
+</body>
+</html>

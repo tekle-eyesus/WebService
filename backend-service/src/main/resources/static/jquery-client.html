@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>jQuery Client</title>
+    <!-- Import jQuery from CDN -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            // When the button is clicked...
+            $("#fetch-btn").click(function() {
+
+                // Make the AJAX GET request to your API
+                $.ajax({
+                    url: "http://localhost:8080/greeting",
+                    data: { name: "jQueryUser" }, // Sends ?name=jQueryUser
+                    type: "GET"
+                }).then(function(data) {
+                    // 'data' is the JSON returned by Spring
+                    // Update the HTML elements with the data
+                    // Note: Task 1 HATEOAS wraps data, but simple fields are usually at root
+                    $('.greeting-content').text(data.content);
+
+                    // If you added an ID field, you would access it like data.id
+                    console.log(data); // Check console to see the _links structure
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+<h1>Task 6: jQuery Client</h1>
+
+<div>
+    <button id="fetch-btn">Get Greeting</button>
+</div>
+
+<div style="margin-top: 20px; border: 1px solid #ccc; padding: 10px;">
+    <h3>Result:</h3>
+    <p><strong>Content:</strong> <span class="greeting-content">...</span></p>
+</div>
+</body>
+</html>
